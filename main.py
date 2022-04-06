@@ -1,4 +1,4 @@
-from controller import Controller
+from controllers.controller import Controller
 from vues import Vues
 
 # 1 : initialiser Controller et Vues
