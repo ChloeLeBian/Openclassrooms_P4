@@ -2,7 +2,6 @@ from .globals import LIST_OF_MATCHES, NUMBER_OF_PLAYERS, NUMBER_MAX_OF_ROUNDS
 from models import Round
 
 
-
 class ControllerRounds:
 
     # 1 : ouvrir la liste des matchs
@@ -22,7 +21,15 @@ class ControllerRounds:
 
     # 7 : définir une fonction détaillant ce qui se passe quand on choisi 2 dans le menu
     # Rounds
-    def step_two(self, x, nb_of_players, nb_of_rounds, matches, list_of_players, list_of_pairs_of_players):
+    def step_two(
+        self,
+        x,
+        nb_of_players,
+        nb_of_rounds,
+        matches,
+        list_of_players,
+        list_of_pairs_of_players,
+    ):
         # 1 : si la liste des joueurs dans Tinydb est vide
         if x == 0:
             # 1 : appeler la fonction view_deal_with_print dans Vues pour notifier à l'organisateur
@@ -54,15 +61,13 @@ class ControllerRounds:
             # extraite de Tinydb au préalable
             number_of_matches = len(matches.all())
             # 7 : calculer le round actuel en fonction du nombre de matchs déjà joués
-            actual_round = (number_of_matches // (len(list_of_players) / 2) + 1)
+            actual_round = number_of_matches // (len(list_of_players) / 2) + 1
             # 8 : si on est au premier round
             if actual_round == 1:
                 # 1 : afficher le round actuel à l'organisateur
                 self.view.deal_with_print("Vous êtes au round 1")
                 # 2 : créer les premiers matchs
-                first_matches = self.create_matches(
-                    list_of_players, list_of_matches, 1
-                )
+                first_matches = self.create_matches(list_of_players, list_of_matches, 1)
                 # 3 : appeler la fonction display matches dans Vues pour afficher les matchs créés
                 self.view.display_matches(first_matches, match_to_display=1)
                 # 4 : créer le round à partir des matchs
@@ -74,17 +79,13 @@ class ControllerRounds:
                 # 6 : appeler la fonction set_score pour ajouter un score aux matchs
                 self.set_score(first_round)
                 # 7 : revenir au menu
-                return self.menu(
-                    list_of_players, list_of_pairs_of_players
-                )
+                return self.menu(list_of_players, list_of_pairs_of_players)
             # 9 : si on a dépassé le premier round mais que les limites de rounds maximum définies par l'oganisateur
             # et par le nombre de joueurs ne sont pas atteintes
             elif actual_round <= number_max_of_rounds and actual_round <= nb_of_rounds:
                 # 1 : appeler la fonction view_deal_with_print dans Vues pour notifier à l'organisateur
                 # le round auquel il est arrivé
-                self.view.deal_with_print(
-                    "Vous êtes au round {}".format(actual_round)
-                )
+                self.view.deal_with_print("Vous êtes au round {}".format(actual_round))
                 # 2 : créer les matchs
                 match, current_match = self.create_matches(
                     list_of_players, list_of_matches, actual_round
@@ -113,9 +114,7 @@ class ControllerRounds:
                 # 8 : appeler la fonction set_score pour ajouter un score aux matchs
                 self.set_score(round)
                 # 9 : revenir au menu
-                return self.menu(
-                    list_of_players, list_of_pairs_of_players
-                )
+                return self.menu(list_of_players, list_of_pairs_of_players)
             # 10 : si le nombre de rounds défini par l'organisteur est atteint
             elif actual_round > number_max_of_rounds:
                 # 1 : appeler la fonction view_deal_with_print dans Vues pour notifier à l'organisateur qu'il a
@@ -124,9 +123,7 @@ class ControllerRounds:
                     "Le nombre maximum de rounds choisis par l'oganisateur est atteint"
                 )
                 # 2 : revenir au menu
-                return self.menu(
-                    list_of_players, list_of_pairs_of_players
-                )
+                return self.menu(list_of_players, list_of_pairs_of_players)
             # 11 : si le nombre de rounds maximum possible est atteint
             elif actual_round > nb_of_rounds:
                 # 1 : appeler la fonction view_deal_with_print dans Vues pour notifier à l'organisateur qu'il a
@@ -135,9 +132,7 @@ class ControllerRounds:
                     "Le nombre maximum de rounds possibles est atteint"
                 )
                 # 2 : revenir au menu
-                return self.menu(
-                    list_of_players, list_of_pairs_of_players
-                )
+                return self.menu(list_of_players, list_of_pairs_of_players)
 
     # 12 : définir une fonction qui permet de créer les rounds
     # Rounds
@@ -148,7 +143,7 @@ class ControllerRounds:
         return round
 
     # 14 : définir une fonction qui permet de rentrer les scores des joueurs pour chaque round
-    # Rounds ou Players? 
+    # Rounds ou Players?
     def set_score(self, round):
         # 1 : créer une boucle pour tous les matchs du round
         for elem in round.matches:
@@ -163,17 +158,25 @@ class ControllerRounds:
             while repeat:
                 # 1 : appeler la fonction view_deal_with_input dans Vues qui affiche du texte et récupère la réponse
                 # de l'utilisateur pour obtenir le score du premier joueur
-                score_1 = self.view.deal_with_input("Entrez le score de {} : ".format(j1))
+                score_1 = self.view.deal_with_input(
+                    "Entrez le score de {} : ".format(j1)
+                )
                 # 2 : créer une boucle while pour être sûr que le score est un float
                 while not self.isfloat(score_1):
-                    score_1 = self.view.deal_with_input("Entrez le score de {} (0, 1 ou 0.5) : ".format(j1))
+                    score_1 = self.view.deal_with_input(
+                        "Entrez le score de {} (0, 1 ou 0.5) : ".format(j1)
+                    )
                 score_1 = float(score_1)
                 # 3 : appeler la fonction view_deal_with_input dans Vues qui affiche du texte et récupère la réponse
                 # de l'utilisateur pour obtenir le score du deuxième joueur
-                score_2 = self.view.deal_with_input("Entrez le score de {} : ".format(j2))
+                score_2 = self.view.deal_with_input(
+                    "Entrez le score de {} : ".format(j2)
+                )
                 # 4 : créer une boucle while pour être sûr que le score est un float
                 while not self.isfloat(score_2):
-                    score_2 = self.view.deal_with_input("Entrez le score de {} (0, 1 ou 0.5) : ".format(j2))
+                    score_2 = self.view.deal_with_input(
+                        "Entrez le score de {} (0, 1 ou 0.5) : ".format(j2)
+                    )
                 score_2 = float(score_2)
                 # 5 : vérifier si les deux scores additionés ne font pas 1
                 if score_1 + score_2 != 1.0:
@@ -204,10 +207,14 @@ class ControllerRounds:
             # 9 : ajouter le score que le joueur 1 a obtenu lors de son match à son ancien score
             current_score_P1 = float(current_player[0]["score"]) + score_1
             # 10 : appeler la fonction update_score_player dans Models pour modifier le score du joueur 1
-            self.models_player_db.update_score_player(player, players, current_score_P1, j1)
+            self.models_player_db.update_score_player(
+                player, players, current_score_P1, j1
+            )
             # 11 : appeler la fonction search_player de Models pour aller chercher le joueur 2 dans TinyDB
             current_player = self.models_player_db.search_player(player, players, j2)
             # 12 : ajouter le score que le joueur 2 a obtenu lors de son match à son ancien score
             current_score_P2 = float(current_player[0]["score"]) + score_2
             # 13 : appeler la fonction update_score_player dans Models pour modifier le score du joueur 2
-            self.models_player_db.update_score_player(player, players, current_score_P2, j2)
+            self.models_player_db.update_score_player(
+                player, players, current_score_P2, j2
+            )

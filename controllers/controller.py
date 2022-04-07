@@ -53,7 +53,14 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds):
             # 5 : calculer le nombre de rounds possible à partir du nombre de joueurs
             nb_of_rounds = int(nb_of_players - 1)
             # 6 : appeler la fonction step_two qui défini ce qui se passe quand l'organisateur choisi 2
-            self.step_two(len(players), nb_of_players, nb_of_rounds, matches, list_of_players, list_of_pairs_of_players)
+            self.step_two(
+                len(players),
+                nb_of_players,
+                nb_of_rounds,
+                matches,
+                list_of_players,
+                list_of_pairs_of_players,
+            )
         # 4 : si son choix est 3
         elif answer == "3":
             # 1 : appeler la fonction rank_players qui classe les joueurs selon leur score
@@ -68,7 +75,6 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds):
             # 2 : retourner le menu
             return self.menu(list_of_players, list_of_pairs_of_players)
 
-    
     # 13 : définir une fonction qui permet de créer une liste de paires de joueurs
     # Controller?
     def create_list_of_pairs_of_players(
@@ -88,10 +94,8 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds):
         # 2 : récupérer la liste de paires de joueurs complétée
         return list_of_pairs_of_players
 
-    
-
     # 15 : définir une fonction qui permet de vérifier si un élément est un float
-    # Controller? 
+    # Controller?
     def isfloat(self, num):
         try:
             float(num)
@@ -100,7 +104,7 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds):
             return False
 
     # 16 : définir une fonction qui permet de vérifier si un élément est un entier
-    # Controller? 
+    # Controller?
     def isint(self, num):
         try:
             int(num)
@@ -110,12 +114,10 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds):
 
     # 17 : définir une fonction qui permet de vérifier si un élément valide en étant un entier situé entre
     # 1 et la longueur d'une liste
-    # Controller? 
+    # Controller?
     def numberisvalid(self, num, number_of_elements):
         if not self.isint(num):
             return False
         if int(num) < 1 or int(num) > number_of_elements:
             return False
         return True
-
-

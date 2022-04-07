@@ -15,7 +15,9 @@ class Vues:
             # 2 : récupérer le nom de famille et le prénom du joueur 1
             output_1 = f"{i+match_to_display} : {pair_of_players[0]['surname']} {pair_of_players[0]['family_name']}"
             # 3 : récupérer le nom de famille et le prénom du joueur 2
-            output_2 = f"{pair_of_players[1]['surname']} {pair_of_players[1]['family_name']}"
+            output_2 = (
+                f"{pair_of_players[1]['surname']} {pair_of_players[1]['family_name']}"
+            )
             # 4 : afficher le match
             print(f"Match {output_1} VS {output_2}")
 
@@ -25,7 +27,13 @@ class Vues:
         # 1 : créer une boucle pour chaque joueur
         for player in players:
             # 1 : afficher ses informations
-            print(player.family_name, player.surname, player.sex, player.date_of_birth, player.ranking)
+            print(
+                player.family_name,
+                player.surname,
+                player.sex,
+                player.date_of_birth,
+                player.ranking,
+            )
 
     # 4 : définir une fonction qui permet d'afficher le rang des joueurs dans le classement
     def display_ranking(self, list_of_players):

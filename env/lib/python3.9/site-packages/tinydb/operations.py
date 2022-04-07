@@ -13,6 +13,7 @@ def delete(field):
     """
     Delete a given field from the document.
     """
+
     def transform(doc):
         del doc[field]
 
@@ -23,6 +24,7 @@ def add(field, n):
     """
     Add ``n`` to a given field in the document.
     """
+
     def transform(doc):
         doc[field] += n
 
@@ -33,6 +35,7 @@ def subtract(field, n):
     """
     Subtract ``n`` to a given field in the document.
     """
+
     def transform(doc):
         doc[field] -= n
 
@@ -43,6 +46,7 @@ def set(field, val):
     """
     Set a given field to ``val``.
     """
+
     def transform(doc):
         doc[field] = val
 
@@ -53,6 +57,7 @@ def increment(field):
     """
     Increment a given field in the document by 1.
     """
+
     def transform(doc):
         doc[field] += 1
 
@@ -63,6 +68,7 @@ def decrement(field):
     """
     Decrement a given field in the document by 1.
     """
+
     def transform(doc):
         doc[field] -= 1
 

@@ -51,7 +51,14 @@ class Controller:
             # 5 : calculer le nombre de rounds possible à partir du nombre de joueurs
             nb_of_rounds = int(nb_of_players - 1)
             # 6 : appeler la fonction step_two qui défini ce qui se passe quand l'organisateur choisi 2
-            self.step_two(len(players), nb_of_players, nb_of_rounds, matches, list_of_players, list_of_pairs_of_players)
+            self.step_two(
+                len(players),
+                nb_of_players,
+                nb_of_rounds,
+                matches,
+                list_of_players,
+                list_of_pairs_of_players,
+            )
         # 4 : si son choix est 3
         elif answer == "3":
             # 1 : appeler la fonction rank_players qui classe les joueurs selon leur score
@@ -90,7 +97,15 @@ class Controller:
 
     # 7 : définir une fonction détaillant ce qui se passe quand on choisi 2 dans le menu
     # Rounds
-    def step_two(self, x, nb_of_players, nb_of_rounds, matches, list_of_players, list_of_pairs_of_players):
+    def step_two(
+        self,
+        x,
+        nb_of_players,
+        nb_of_rounds,
+        matches,
+        list_of_players,
+        list_of_pairs_of_players,
+    ):
         # 1 : si la liste des joueurs dans Tinydb est vide
         if x == 0:
             # 1 : appeler la fonction view_deal_with_print dans Vues pour notifier à l'organisateur
@@ -122,15 +137,13 @@ class Controller:
             # extraite de Tinydb au préalable
             number_of_matches = len(matches.all())
             # 7 : calculer le round actuel en fonction du nombre de matchs déjà joués
-            actual_round = (number_of_matches // (len(list_of_players) / 2) + 1)
+            actual_round = number_of_matches // (len(list_of_players) / 2) + 1
             # 8 : si on est au premier round
             if actual_round == 1:
                 # 1 : afficher le round actuel à l'organisateur
                 self.view.deal_with_print("Vous êtes au round 1")
                 # 2 : créer les premiers matchs
-                first_matches = self.create_matches(
-                    list_of_players, list_of_matches, 1
-                )
+                first_matches = self.create_matches(list_of_players, list_of_matches, 1)
                 # 3 : appeler la fonction display matches dans Vues pour afficher les matchs créés
                 self.view.display_matches(first_matches, match_to_display=1)
                 # 4 : créer le round à partir des matchs
@@ -142,17 +155,13 @@ class Controller:
                 # 6 : appeler la fonction set_score pour ajouter un score aux matchs
                 self.set_score(first_round)
                 # 7 : revenir au menu
-                return self.menu(
-                    list_of_players, list_of_pairs_of_players
-                )
+                return self.menu(list_of_players, list_of_pairs_of_players)
             # 9 : si on a dépassé le premier round mais que les limites de rounds maximum définies par l'oganisateur
             # et par le nombre de joueurs ne sont pas atteintes
             elif actual_round <= number_max_of_rounds and actual_round <= nb_of_rounds:
                 # 1 : appeler la fonction view_deal_with_print dans Vues pour notifier à l'organisateur
                 # le round auquel il est arrivé
-                self.view.deal_with_print(
-                    "Vous êtes au round {}".format(actual_round)
-                )
+                self.view.deal_with_print("Vous êtes au round {}".format(actual_round))
                 # 2 : créer les matchs
                 match, current_match = self.create_matches(
                     list_of_players, list_of_matches, actual_round
@@ -181,9 +190,7 @@ class Controller:
                 # 8 : appeler la fonction set_score pour ajouter un score aux matchs
                 self.set_score(round)
                 # 9 : revenir au menu
-                return self.menu(
-                    list_of_players, list_of_pairs_of_players
-                )
+                return self.menu(list_of_players, list_of_pairs_of_players)
             # 10 : si le nombre de rounds défini par l'organisteur est atteint
             elif actual_round > number_max_of_rounds:
                 # 1 : appeler la fonction view_deal_with_print dans Vues pour notifier à l'organisateur qu'il a
@@ -192,9 +199,7 @@ class Controller:
                     "Le nombre maximum de rounds choisis par l'oganisateur est atteint"
                 )
                 # 2 : revenir au menu
-                return self.menu(
-                    list_of_players, list_of_pairs_of_players
-                )
+                return self.menu(list_of_players, list_of_pairs_of_players)
             # 11 : si le nombre de rounds maximum possible est atteint
             elif actual_round > nb_of_rounds:
                 # 1 : appeler la fonction view_deal_with_print dans Vues pour notifier à l'organisateur qu'il a
@@ -203,9 +208,7 @@ class Controller:
                     "Le nombre maximum de rounds possibles est atteint"
                 )
                 # 2 : revenir au menu
-                return self.menu(
-                    list_of_players, list_of_pairs_of_players
-                )
+                return self.menu(list_of_players, list_of_pairs_of_players)
 
     # 8 : définir une fonction qui permet de classer les joueurs selon leur score par ordre décroissant
     # Players
@@ -299,7 +302,9 @@ class Controller:
             # 1 : appeler la fonction view_deal_with_input dans Vues qui affiche du texte et récupère la réponse
             # de l'utilisateur pour notifier l'organisateur tant que sa réponse est incorrecte et récupérer la bonne
             # réponse
-            sex = self.view.deal_with_input("Format invalide, veuillez rééssayer en entrant m ou f")
+            sex = self.view.deal_with_input(
+                "Format invalide, veuillez rééssayer en entrant m ou f"
+            )
         # 6 : appeler la fonction view_deal_with_input dans Vues qui affiche du texte et récupère la réponse
         # de l'utilisateur pour demander à l'organisateur le rang du joueur
         ranking = int(
@@ -365,9 +370,14 @@ class Controller:
             # 6 : effacer le ranking précédent du joueur de la liste des rankings
             rankings_players.remove(player.get_ranking())
             # 7 : récupérer les informations du joueur avec la fonction get_info_of_player
-            surname, family_name, date_of_birth, sex, ranking, score = self.get_info_of_player(
-                rankings_players, number
-            )
+            (
+                surname,
+                family_name,
+                date_of_birth,
+                sex,
+                ranking,
+                score,
+            ) = self.get_info_of_player(rankings_players, number)
             # 8 : ajouter chaque information récupérée au joueur
             player.set_surname(surname)
             player.set_family_name(family_name)
@@ -398,7 +408,11 @@ class Controller:
         # de famille
         match_eq = lambda x, y: (
             (x[0]["surname"] == y[0]["surname"] and x[1]["surname"] == y[1]["surname"])
-            or (x[1]["surname"] == y[0]["surname"] and x[0]["surname"] == y[1]["surname"]))
+            or (
+                x[1]["surname"] == y[0]["surname"]
+                and x[0]["surname"] == y[1]["surname"]
+            )
+        )
         # 5 : vérifier toutes les combinaisons de joueurs qui ont le même nom de famille
         player_in = lambda x, y: (
             (x["surname"] == y[0]["surname"]) or (x["surname"] == y[1]["surname"])
@@ -448,7 +462,7 @@ class Controller:
             for i in range(len(current_match)):
                 temp = current_match[i]
                 check_matches = [
-                    x for x in current_match[i + 1:] if x not in to_delete
+                    x for x in current_match[i + 1 :] if x not in to_delete
                 ]
                 for m in check_matches:
                     if player_in(temp[0], m) or player_in(temp[1], m):
@@ -498,7 +512,7 @@ class Controller:
         return list_of_pairs_of_players
 
     # 14 : définir une fonction qui permet de rentrer les scores des joueurs pour chaque round
-    # Rounds ou Players? 
+    # Rounds ou Players?
     def set_score(self, round):
         # 1 : créer une boucle pour tous les matchs du round
         for elem in round.matches:
@@ -513,17 +527,25 @@ class Controller:
             while repeat:
                 # 1 : appeler la fonction view_deal_with_input dans Vues qui affiche du texte et récupère la réponse
                 # de l'utilisateur pour obtenir le score du premier joueur
-                score_1 = self.view.deal_with_input("Entrez le score de {} : ".format(j1))
+                score_1 = self.view.deal_with_input(
+                    "Entrez le score de {} : ".format(j1)
+                )
                 # 2 : créer une boucle while pour être sûr que le score est un float
                 while not self.isfloat(score_1):
-                    score_1 = self.view.deal_with_input("Entrez le score de {} (0, 1 ou 0.5) : ".format(j1))
+                    score_1 = self.view.deal_with_input(
+                        "Entrez le score de {} (0, 1 ou 0.5) : ".format(j1)
+                    )
                 score_1 = float(score_1)
                 # 3 : appeler la fonction view_deal_with_input dans Vues qui affiche du texte et récupère la réponse
                 # de l'utilisateur pour obtenir le score du deuxième joueur
-                score_2 = self.view.deal_with_input("Entrez le score de {} : ".format(j2))
+                score_2 = self.view.deal_with_input(
+                    "Entrez le score de {} : ".format(j2)
+                )
                 # 4 : créer une boucle while pour être sûr que le score est un float
                 while not self.isfloat(score_2):
-                    score_2 = self.view.deal_with_input("Entrez le score de {} (0, 1 ou 0.5) : ".format(j2))
+                    score_2 = self.view.deal_with_input(
+                        "Entrez le score de {} (0, 1 ou 0.5) : ".format(j2)
+                    )
                 score_2 = float(score_2)
                 # 5 : vérifier si les deux scores additionés ne font pas 1
                 if score_1 + score_2 != 1.0:
@@ -554,16 +576,20 @@ class Controller:
             # 9 : ajouter le score que le joueur 1 a obtenu lors de son match à son ancien score
             current_score_P1 = float(current_player[0]["score"]) + score_1
             # 10 : appeler la fonction update_score_player dans Models pour modifier le score du joueur 1
-            self.models_player_db.update_score_player(player, players, current_score_P1, j1)
+            self.models_player_db.update_score_player(
+                player, players, current_score_P1, j1
+            )
             # 11 : appeler la fonction search_player de Models pour aller chercher le joueur 2 dans TinyDB
             current_player = self.models_player_db.search_player(player, players, j2)
             # 12 : ajouter le score que le joueur 2 a obtenu lors de son match à son ancien score
             current_score_P2 = float(current_player[0]["score"]) + score_2
             # 13 : appeler la fonction update_score_player dans Models pour modifier le score du joueur 2
-            self.models_player_db.update_score_player(player, players, current_score_P2, j2)
+            self.models_player_db.update_score_player(
+                player, players, current_score_P2, j2
+            )
 
     # 15 : définir une fonction qui permet de vérifier si un élément est un float
-    # Controller? 
+    # Controller?
     def isfloat(self, num):
         try:
             float(num)
@@ -572,7 +598,7 @@ class Controller:
             return False
 
     # 16 : définir une fonction qui permet de vérifier si un élément est un entier
-    # Controller? 
+    # Controller?
     def isint(self, num):
         try:
             int(num)
@@ -582,7 +608,7 @@ class Controller:
 
     # 17 : définir une fonction qui permet de vérifier si un élément valide en étant un entier situé entre
     # 1 et la longueur d'une liste
-    # Controller? 
+    # Controller?
     def numberisvalid(self, num, number_of_elements):
         if not self.isint(num):
             return False

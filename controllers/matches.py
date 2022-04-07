@@ -33,7 +33,11 @@ class ControllerMatches:
         # de famille
         match_eq = lambda x, y: (
             (x[0]["surname"] == y[0]["surname"] and x[1]["surname"] == y[1]["surname"])
-            or (x[1]["surname"] == y[0]["surname"] and x[0]["surname"] == y[1]["surname"]))
+            or (
+                x[1]["surname"] == y[0]["surname"]
+                and x[0]["surname"] == y[1]["surname"]
+            )
+        )
         # 5 : vérifier toutes les combinaisons de joueurs qui ont le même nom de famille
         player_in = lambda x, y: (
             (x["surname"] == y[0]["surname"]) or (x["surname"] == y[1]["surname"])
@@ -83,7 +87,7 @@ class ControllerMatches:
             for i in range(len(current_match)):
                 temp = current_match[i]
                 check_matches = [
-                    x for x in current_match[i + 1:] if x not in to_delete
+                    x for x in current_match[i + 1 :] if x not in to_delete
                 ]
                 for m in check_matches:
                     if player_in(temp[0], m) or player_in(temp[1], m):

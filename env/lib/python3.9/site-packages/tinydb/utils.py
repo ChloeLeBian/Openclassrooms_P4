@@ -3,15 +3,23 @@ Utility functions.
 """
 
 from collections import OrderedDict, abc
-from typing import List, Iterator, TypeVar, Generic, Union, Optional, Type, \
-    TYPE_CHECKING
+from typing import (
+    List,
+    Iterator,
+    TypeVar,
+    Generic,
+    Union,
+    Optional,
+    Type,
+    TYPE_CHECKING,
+)
 
-K = TypeVar('K')
-V = TypeVar('V')
-D = TypeVar('D')
-T = TypeVar('T')
+K = TypeVar("K")
+V = TypeVar("V")
+D = TypeVar("D")
+T = TypeVar("T")
 
-__all__ = ('LRUCache', 'freeze', 'with_typehint')
+__all__ = ("LRUCache", "freeze", "with_typehint")
 
 
 def with_typehint(baseclass: Type[T]):
@@ -125,7 +133,7 @@ class FrozenDict(dict):
         return hash(tuple(sorted(self.items())))
 
     def _immutable(self, *args, **kws):
-        raise TypeError('object is immutable')
+        raise TypeError("object is immutable")
 
     # Disable write access to the dict
     __setitem__ = _immutable
@@ -135,10 +143,10 @@ class FrozenDict(dict):
     popitem = _immutable
 
     def update(self, e=None, **f):
-        raise TypeError('object is immutable')
+        raise TypeError("object is immutable")
 
     def pop(self, k, d=None):
-        raise TypeError('object is immutable')
+        raise TypeError("object is immutable")
 
 
 def freeze(obj):

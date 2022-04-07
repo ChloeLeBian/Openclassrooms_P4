@@ -9,7 +9,7 @@ import os
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional
 
-__all__ = ('Storage', 'JSONStorage', 'MemoryStorage')
+__all__ = ("Storage", "JSONStorage", "MemoryStorage")
 
 
 def touch(path: str, create_dirs: bool):
@@ -28,7 +28,7 @@ def touch(path: str, create_dirs: bool):
 
     # Create the file by opening it in 'a' mode which creates the file if it
     # does not exist yet but does not modify its contents
-    with open(path, 'a'):
+    with open(path, "a"):
         pass
 
 
@@ -53,7 +53,7 @@ class Storage(ABC):
         Return ``None`` here to indicate that the storage is empty.
         """
 
-        raise NotImplementedError('To be overridden!')
+        raise NotImplementedError("To be overridden!")
 
     @abstractmethod
     def write(self, data: Dict[str, Dict[str, Any]]) -> None:
@@ -65,7 +65,7 @@ class Storage(ABC):
         :param data: The current state of the database.
         """
 
-        raise NotImplementedError('To be overridden!')
+        raise NotImplementedError("To be overridden!")
 
     def close(self) -> None:
         """
@@ -80,7 +80,9 @@ class JSONStorage(Storage):
     Store the data in a JSON file.
     """
 
-    def __init__(self, path: str, create_dirs=False, encoding=None, access_mode='r+', **kwargs):
+    def __init__(
+        self, path: str, create_dirs=False, encoding=None, access_mode="r+", **kwargs
+    ):
         """
         Create a new instance.
 
@@ -98,7 +100,9 @@ class JSONStorage(Storage):
 
         # Create the file if it doesn't exist and creating is allowed by the
         # access mode
-        if any([character in self._mode for character in ('+', 'w', 'a')]):  # any of the writing modes
+        if any(
+            [character in self._mode for character in ("+", "w", "a")]
+        ):  # any of the writing modes
             touch(path, create_dirs=create_dirs)
 
         # Open the file for reading/writing
@@ -135,7 +139,9 @@ class JSONStorage(Storage):
         try:
             self._handle.write(serialized)
         except io.UnsupportedOperation:
-            raise IOError('Cannot write to the database. Access mode is "{0}"'.format(self._mode))
+            raise IOError(
+                'Cannot write to the database. Access mode is "{0}"'.format(self._mode)
+            )
 
         # Ensure the file has been written
         self._handle.flush()

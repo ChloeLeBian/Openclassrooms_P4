@@ -5,7 +5,7 @@ from models import Player
 
 class ControllerPlayers:
 
-     # 1 : ouvrir la liste des matchs
+    # 1 : ouvrir la liste des matchs
     global list_of_matches
     list_of_matches = LIST_OF_MATCHES
 
@@ -134,7 +134,9 @@ class ControllerPlayers:
             # 1 : appeler la fonction view_deal_with_input dans Vues qui affiche du texte et récupère la réponse
             # de l'utilisateur pour notifier l'organisateur tant que sa réponse est incorrecte et récupérer la bonne
             # réponse
-            sex = self.view.deal_with_input("Format invalide, veuillez rééssayer en entrant m ou f")
+            sex = self.view.deal_with_input(
+                "Format invalide, veuillez rééssayer en entrant m ou f"
+            )
         # 6 : appeler la fonction view_deal_with_input dans Vues qui affiche du texte et récupère la réponse
         # de l'utilisateur pour demander à l'organisateur le rang du joueur
         ranking = int(
@@ -160,7 +162,7 @@ class ControllerPlayers:
         score = 0
         # 9 : récupérer toutes les données du joueurs
         return surname, family_name, date_of_birth, sex, ranking, score
-    
+
     # 10 : définir une fonction qui permet de sauvegarder les informations des joueurs
     # Players
     def save_players(self, list_of_players):
@@ -200,9 +202,14 @@ class ControllerPlayers:
             # 6 : effacer le ranking précédent du joueur de la liste des rankings
             rankings_players.remove(player.get_ranking())
             # 7 : récupérer les informations du joueur avec la fonction get_info_of_player
-            surname, family_name, date_of_birth, sex, ranking, score = self.get_info_of_player(
-                rankings_players, number
-            )
+            (
+                surname,
+                family_name,
+                date_of_birth,
+                sex,
+                ranking,
+                score,
+            ) = self.get_info_of_player(rankings_players, number)
             # 8 : ajouter chaque information récupérée au joueur
             player.set_surname(surname)
             player.set_family_name(family_name)
