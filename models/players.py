@@ -2,7 +2,7 @@ from tinydb import TinyDB, Query
 
 
 # 1 : initialiser TinyDB
-db = TinyDB("database.json")
+db = TinyDB("database/database.json")
 
 
 # 4 : définir une classe Player
@@ -57,15 +57,17 @@ class Player:
 
 # 5 : définir une classe PlayerDB
 class PlayerDB:
-    def __init__(self):
+    def __init__(self, current_tournament):
+        self.current_tournament = current_tournament
+        self.db = TinyDB(f"database/{current_tournament}.json")
         pass
 
     def get_players(self):
-        players = db.table("players")
+        players = self.db.table("players")
         return players
 
     def save_players(self, list_of_players):
-        players = db.table("players")
+        players = self.db.table("players")
         for elem in list_of_players:
 
             players.insert(

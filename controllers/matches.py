@@ -52,7 +52,7 @@ class ControllerMatches:
                 # moitié de la liste (ex : joueur 1 et joueur 5 si huit joueur, joueur 1 et joueur 6 si 10 joueurs)
                 match = Match((players[i], players[i + int(len(list_of_players) / 2)]))
                 # 2 : appeler la fonction save_match dans Models pour sauvegarder le match
-                match.save_match()
+                self.models_match_db.save_match(match.pair_of_players, match.score)
             # 3 : sauvegarder tous les matchs crées dans une liste
             list_of_matches = [
                 Match(x["pair_of_players"], x["score"]) for x in matches.all()
@@ -103,7 +103,7 @@ class ControllerMatches:
             # 9 : créer des tuples à partir des nouveaux matchs potentiels et les sauvegarder
             current_match = [Match((x, y)) for x, y in current_match]
             for m in current_match:
-                m.save_match()
+                self.models_match_db.save_match(m.pair_of_players, m.score)
             # 10 : ajouter ces nouveaux matchs à la liste des matchs
             list_of_matches += current_match
             # 11 : récupérer la liste des matchs complétée et les nouveaux matchs

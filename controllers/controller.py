@@ -1,12 +1,13 @@
-from models import MatchDB, PlayerDB
+from models import MatchDB, PlayerDB, TournamentDB
 from vues import Vues
 from .globals import LIST_OF_MATCHES, NUMBER_OF_PLAYERS, NUMBER_MAX_OF_ROUNDS
 from .players import ControllerPlayers
 from .matches import ControllerMatches
 from .rounds import ControllerRounds
+from .tournaments import ControllerTournaments
 
 
-class Controller(ControllerPlayers, ControllerMatches, ControllerRounds):
+class Controller(ControllerPlayers, ControllerMatches, ControllerRounds, ControllerTournaments):
 
     # 1 : ouvrir la liste des matchs
     global list_of_matches
@@ -22,9 +23,12 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds):
 
     # 4 : initialiser Vues, PlayerDB et MatchDB
     def __init__(self):
+        self.models_tournament_db = TournamentDB()
+        self.current_tournament = self.start()
         self.view = Vues()
-        self.models_player_db = PlayerDB()
-        self.models_match_db = MatchDB()
+        self.models_player_db = PlayerDB(self.current_tournament)
+        self.models_match_db = MatchDB(self.current_tournament)
+        
 
     # 5 : définir une fonction menu
     # Controller

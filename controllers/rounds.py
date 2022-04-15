@@ -68,6 +68,7 @@ class ControllerRounds:
                 self.view.deal_with_print("Vous êtes au round 1")
                 # 2 : créer les premiers matchs
                 first_matches = self.create_matches(list_of_players, list_of_matches, 1)
+                print(first_matches)
                 # 3 : appeler la fonction display matches dans Vues pour afficher les matchs créés
                 self.view.display_matches(first_matches, match_to_display=1)
                 # 4 : créer le round à partir des matchs

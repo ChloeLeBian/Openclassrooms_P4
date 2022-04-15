@@ -1,10 +1,11 @@
-from models import PlayerDB
+
+
 
 
 class Vues:
     # 1 : initialiser PlayerDB
     def __init__(self):
-        self.models_player_db = PlayerDB()
+       pass
 
     # 2 : définir une fonction qui permet d'afficher les matchs
     def display_matches(self, match, match_to_display):

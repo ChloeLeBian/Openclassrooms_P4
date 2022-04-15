@@ -6,9 +6,10 @@ db = TinyDB("database.json")
 
 # 6 : définir une classe Round
 class Round:
-    def __init__(self, name, matches):
+    def __init__(self, name, matches, tournoi=1):
         self.name = name
         self.matches = matches
+        self.tournoi = tournoi
 
     def get_round_name(self):
         return self.name
