@@ -28,23 +28,23 @@ class ControllerTournaments:
         tournament_name = "database"
         tournaments = self.models_tournament_db.get_tournaments()
         if len(tournaments) > 0:
-            print("un ou plusieurs tournoi(s) existe(nt) déjà\n")
+            self.view.deal_with_print("un ou plusieurs tournoi(s) existe(nt) déjà\n")
             i = 0
             tournament_data = []
             for tournament in tournaments:
                 i = i+1
                 tournament_data.append(tournament)
-                print(f"{i}. {tournament['name']}")
-            answer = int(input(f"choisir un tournoi dans la liste ci-dessus (de 1 à {i}) ou entez 0 pour créer un nouveau tournoi\n"))
+                self.view.deal_with_print(f"{i}. {tournament['name']}")
+            answer = int(self.view.deal_with_input(f"choisir un tournoi dans la liste ci-dessus (de 1 à {i}) ou entez 0 pour créer un nouveau tournoi\n"))
             if answer == 0:
                 tournament_name = self.create_tournament()
             else:
                 tournament_name = tournament_data[answer - 1]['name']
 
         else:
-            print("aucun tournoi n'existe il faut créer un nouveau tournoi\n")
+            self.view.deal_with_print("aucun tournoi n'existe il faut créer un nouveau tournoi\n")
             tournament_name = self.create_tournament()
-        print(f"Le tournoi actuel est {tournament_name}\n")
+        self.view.deal_with_print(f"Le tournoi actuel est {tournament_name}\n")
         return tournament_name
 
     def create_tournament(self):

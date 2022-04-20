@@ -24,8 +24,8 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds, Control
     # 4 : initialiser Vues, PlayerDB et MatchDB
     def __init__(self):
         self.models_tournament_db = TournamentDB()
-        self.current_tournament = self.start()
         self.view = Vues()
+        self.current_tournament = self.start()
         self.models_player_db = PlayerDB(self.current_tournament)
         self.models_match_db = MatchDB(self.current_tournament)
         
@@ -68,10 +68,8 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds, Control
         # 4 : si son choix est 3
         elif answer == "3":
             # 1 : appeler la fonction rank_players qui classe les joueurs selon leur score
-            self.rank_players()
-            # 2 : retourner le menu
-            return self.menu(list_of_players, list_of_pairs_of_players)
-        # 5 : si son choix n'est pas compris dans les choix proposés
+            self.step_three(list_of_players, list_of_pairs_of_players)
+        
         else:
             # 1 : appeler la fonction view_deal_with_print dans Vues qui affiche
             # du texte pour notifier à l'organisateur que son choix est incorrect

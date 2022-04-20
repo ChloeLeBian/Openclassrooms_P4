@@ -42,15 +42,49 @@ class ControllerPlayers:
             # 2 : retourner le menu
             return self.menu(list_of_players, list_of_pairs_of_players)
 
+    
+    def step_three(self, list_of_players, list_of_pairs_of_players):
+        answer = self.view.deal_with_input(
+                "Classez vos joueurs par score: 1,\n\rClassez vos joueurs par ordre alphabétique: 2\n\r"
+            )
+        if answer == "1":
+            self.rank_players_by_score()
+            # 2 : retourner le menu
+            return self.menu(list_of_players, list_of_pairs_of_players)
+
+        elif answer == "2":
+            self.rank_players_by_name()
+            # 2 : retourner le menu
+            return self.menu(list_of_players, list_of_pairs_of_players)
+        
+        else:
+            # 1 : appeler la fonction view_deal_with_print dans Vues qui affiche
+            # du texte pour notifier à l'organisateur que son choix est incorrect
+            self.view.deal_with_print("Veuillez entrer 1 ou 2")
+            # 2 : retourner le menu
+            return self.step_three(list_of_players, list_of_pairs_of_players)
+
     # 8 : définir une fonction qui permet de classer les joueurs selon leur score par ordre décroissant
     # Players
-    def rank_players(self):
+    def rank_players_by_score(self):
         # 1 : appeler la fonction get_players dans Mo3dels qui permet de récupérer les joueurs dans TinyDB
         # et les mettre dans une liste de joueurs
         list_of_players = self.models_player_db.get_players()
         # 2 : classer les joueurs de la liste selon leur score
         list_of_players = sorted(
             list_of_players, key=lambda d: d["score"], reverse=True
+        )
+        # 3 : appeler la fonction display ranking dans Vues qui permet d'afficher
+        # les joueurs, leur score et leur rang
+        self.view.display_ranking(list_of_players)
+
+    def rank_players_by_name(self):
+        # 1 : appeler la fonction get_players dans Mo3dels qui permet de récupérer les joueurs dans TinyDB
+        # et les mettre dans une liste de joueurs
+        list_of_players = self.models_player_db.get_players()
+        # 2 : classer les joueurs de la liste selon leur score
+        list_of_players = sorted(
+            list_of_players, key=lambda d: d["family_name"], reverse=False
         )
         # 3 : appeler la fonction display ranking dans Vues qui permet d'afficher
         # les joueurs, leur score et leur rang
