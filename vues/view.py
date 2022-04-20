@@ -1,7 +1,5 @@
 
 
-
-
 class Vues:
     # 1 : initialiser PlayerDB
     def __init__(self):

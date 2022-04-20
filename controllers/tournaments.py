@@ -1,6 +1,5 @@
 from .globals import LIST_OF_MATCHES, NUMBER_OF_PLAYERS, NUMBER_MAX_OF_ROUNDS
 from models import Tournament, tournament
-from vues import Vues
 from datetime import datetime
 
 
@@ -18,7 +17,7 @@ class ControllerTournaments:
     number_max_of_rounds = NUMBER_MAX_OF_ROUNDS
 
     def __init__(self):
-        self.view = Vues()
+        pass
 
     def start(self):
         """ 
