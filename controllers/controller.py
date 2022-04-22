@@ -1,3 +1,4 @@
+import pandas as pd
 from models import MatchDB, PlayerDB, TournamentDB
 from vues import Vues
 from .globals import LIST_OF_MATCHES, NUMBER_OF_PLAYERS, NUMBER_MAX_OF_ROUNDS
@@ -21,6 +22,9 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds, Control
     global number_max_of_rounds
     number_max_of_rounds = NUMBER_MAX_OF_ROUNDS
 
+    #global beginning_file_path
+    #beginning_file_path = BEGINNING_FILE_PATH
+
     # 4 : initialiser Vues, PlayerDB et MatchDB
     def __init__(self):
         self.models_tournament_db = TournamentDB()
@@ -36,7 +40,7 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds, Control
         # 1 : appeler la fonction view_deal_with_input dans Vues qui affiche du texte pour et récupère la réponse
         # de l'utilisateur pour afficher ses choix à l'organisateur
         answer = self.view.deal_with_input(
-            "Ajouter des joueurs: 1,  \n\rGénérer un round: 2,\n\rConsulter le classement des joueurs: 3,\n "
+            "Ajouter des joueurs: 1,\n\rGénérer un round: 2,\n\rConsulter le classement des joueurs: 3,\n\rTéléchargez un rapport: 4\n "
         )
         # 2 : si son choix est 1
         if answer == "1":
@@ -69,7 +73,9 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds, Control
         elif answer == "3":
             # 1 : appeler la fonction rank_players qui classe les joueurs selon leur score
             self.step_three(list_of_players, list_of_pairs_of_players)
-        
+        #elif answer == "4":
+            #df = pd.read_json (r'{}\database\{}.json'.format(beginning_file_path)(self.current_tournament))
+            #df.to_csv (r'{}\csv\{}.csv'.format(beginning_file_path)(self.current_tournament), index = None)
         else:
             # 1 : appeler la fonction view_deal_with_print dans Vues qui affiche
             # du texte pour notifier à l'organisateur que son choix est incorrect

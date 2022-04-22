@@ -68,7 +68,6 @@ class ControllerRounds:
                 self.view.deal_with_print("Vous êtes au round 1")
                 # 2 : créer les premiers matchs
                 first_matches = self.create_matches(list_of_players, list_of_matches, 1)
-                print(first_matches)
                 # 3 : appeler la fonction display matches dans Vues pour afficher les matchs créés
                 self.view.display_matches(first_matches, match_to_display=1)
                 # 4 : créer le round à partir des matchs
@@ -88,9 +87,7 @@ class ControllerRounds:
                 # le round auquel il est arrivé
                 self.view.deal_with_print("Vous êtes au round {}".format(actual_round))
                 # 2 : créer les matchs
-                match, current_match = self.create_matches(
-                    list_of_players, list_of_matches, actual_round
-                )
+                match, current_match = self.create_matches(list_of_players, list_of_matches, actual_round)
                 # 3 : ouvrir une liste pour suivre le décompte des matchs
                 match_to_display = []
                 # 4 : définir l'index à partir duquel on va choisir les matchs à afficher

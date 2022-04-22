@@ -1,27 +1,6 @@
-from .globals import LIST_OF_MATCHES, NUMBER_OF_PLAYERS, NUMBER_MAX_OF_ROUNDS
-from itertools import combinations
-from models import Match
-
-
-class ControllerMatches:
-
-    global list_of_matches
-    list_of_matches = LIST_OF_MATCHES
-
-    # 2 : définir le nombre de joueurs
-    global number_of_players
-    number_of_players = NUMBER_OF_PLAYERS
-
-    # 3 : définir le nombre maximum de rounds
-    global number_max_of_rounds
-    number_max_of_rounds = NUMBER_MAX_OF_ROUNDS
-
-    def __init__(self):
-        pass
-
-    def create_matches(self, list_of_players, list_of_matches, round):
+def create_matches(self, list_of_players, list_of_matches, round):
         # 1 : initialiser une liste de matchs vide
-        possible_matches = []
+        current_match = []
         # 2 : appeler la fonction get_players dans Models qui permet de récupérer les joueurs dans TinyDB
         players = self.models_player_db.get_players()
         players = players.all()
@@ -31,23 +10,11 @@ class ControllerMatches:
         # de famille
         match_eq = lambda x, y: (
             (x[0]["surname"] == y[0]["surname"] and x[1]["surname"] == y[1]["surname"])
-            or (
-                x[1]["surname"] == y[0]["surname"]
-                and x[0]["surname"] == y[1]["surname"]
-            )
-        )
+            or (x[1]["surname"] == y[0]["surname"] and x[0]["surname"] == y[1]["surname"]))
         # 5 : vérifier toutes les combinaisons de joueurs qui ont le même nom de famille
-        def possible_to_play(m,cm):
-            print('='*50)
-            for item in cm:
-                print((item[0]['surname'], item[1]['surname']),(m[0]['surname'], m[1]['surname']))
-                if m[0]['surname'] == item[0]['surname'] or m[1]['surname'] == item[0]['surname']:
-                    return False
-                if m[0]["surname"] == item[1]["surname"] or m[1]["surname"] == item[1]["surname"]:
-                    return False
-            print(True,m[0]['surname'], m[1]['surname'])
-            return True
-
+        player_in = lambda x, y: (
+            (x["surname"] == y[0]["surname"]) or (x["surname"] == y[1]["surname"])
+        )
         # 6 : si on est au round 1
         if round == 1:
             # 1 : classer les joueurs par rang et par ordre croissant
@@ -58,7 +25,7 @@ class ControllerMatches:
                 # moitié de la liste (ex : joueur 1 et joueur 5 si huit joueur, joueur 1 et joueur 6 si 10 joueurs)
                 match = Match((players[i], players[i + int(len(list_of_players) / 2)]))
                 # 2 : appeler la fonction save_match dans Models pour sauvegarder le match
-                self.models_match_db.save_match(match.pair_of_players, match.score)
+                match.save_match()
             # 3 : sauvegarder tous les matchs crées dans une liste
             list_of_matches = [
                 Match(x["pair_of_players"], x["score"]) for x in matches.all()
@@ -85,28 +52,57 @@ class ControllerMatches:
                     if found or match_eq(m, j):
                         found = True
                 if not found:
-                    possible_matches.append(m)
+                    current_match.append(m)
             # 5 : créer une liste de matchs à effacer
-            current_matches = []
+            to_delete = []
             # 6 : vérifier tous les matchs dans lesquels un joueur se trouve à nouveau
             # afin qu'il ne joue pas deux fois et les ajouter aux matchs à effacer
-            for m in possible_matches:
-                if possible_to_play(m,current_matches):
-                    current_matches.append(m)
-                    
+            for i in range(len(current_match)):
+                temp = current_match[i]
+                check_matches = [
+                    x for x in current_match[i + 1:] if x not in to_delete
+                ]
+                for m in check_matches:
+                    if player_in(temp[0], m) or player_in(temp[1], m):
+                        if len(current_match) - len(to_delete) > len(players) / 2:
+                            to_delete.append(m)
+            # 7 : effacer tous les matchs à effacer de la liste des matchs potentiels
+            for m in to_delete:
+                current_match.remove(m)
             # 8 : obtenir la liste des matchs sans les nouveaux matchs potentiels
             list_of_matches = [
                 Match(x["pair_of_players"], x["score"]) for x in matches.all()
             ]
             # 9 : créer des tuples à partir des nouveaux matchs potentiels et les sauvegarder
-            current_matches = [Match((x, y)) for x, y in current_matches]
-            for m in current_matches:
-                self.models_match_db.save_match(m.pair_of_players, m.score)
+            current_match = [Match((x, y)) for x, y in current_match]
+            for m in current_match:
+                m.save_match()
             # 10 : ajouter ces nouveaux matchs à la liste des matchs
-            list_of_matches += current_matches
+            list_of_matches += current_match
             # 11 : récupérer la liste des matchs complétée et les nouveaux matchs
-            return list_of_matches, current_matches
-    # 11 : définir une fonction qui permet de créer les matchs
-    # Matches
-            
-            
+            return list_of_matches, current_match
+
+    # 12 : définir une fonction qui permet de créer les rounds
+    def create_rounds(self, list_of_matches):
+        # 1 : associer une liste de matchs à chaque round
+        round = Round(name="Round", matches=list_of_matches)
+        # 2 : récupérer le round
+        return round
+
+    # 13 : définir une fonction qui permet de créer une liste de paires de joueurs
+    def create_list_of_pairs_of_players(
+        self, list_of_matches, list_of_pairs_of_players
+    ):
+        # 1 : faire une boucle pour tous les matchs dans la liste de matchs
+        for elem in list_of_matches:
+            # 1 : récupérer la paire de joueur du match
+            pair_of_players = elem.get_pair_of_players()
+            # 2 : ajouter le nom de famille des joueurs à la liste de paires de joueurs
+            list_of_pairs_of_players.append(
+                (
+                    pair_of_players[0]["family_name"],
+                    pair_of_players[1]["family_name"],
+                )
+            )
+        # 2 : récupérer la liste de paires de joueurs complétée
+        return list_of_pairs_of_players

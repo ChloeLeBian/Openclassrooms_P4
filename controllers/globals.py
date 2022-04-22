@@ -6,3 +6,5 @@ NUMBER_OF_PLAYERS = 8
 
 # 3 : définir le nombre maximum de rounds
 NUMBER_MAX_OF_ROUNDS = 4
+
+#BEGINNING_FILE_PATH = "C:\Users\chloelebian\Desktop\Openclassrooms-P4-Cloclo"
