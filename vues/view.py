@@ -1,3 +1,4 @@
+from models import matches
 
 
 class Vues:
@@ -12,11 +13,9 @@ class Vues:
             # 1 : récupérer la paire de joueurs du match
             pair_of_players = match[i].get_pair_of_players()
             # 2 : récupérer le nom de famille et le prénom du joueur 1
-            output_1 = f"{i+match_to_display} : {pair_of_players[0]['surname']} {pair_of_players[0]['family_name']}"
+            output_1 = f"{pair_of_players[0]['surname']} {pair_of_players[0]['family_name']}"
             # 3 : récupérer le nom de famille et le prénom du joueur 2
-            output_2 = (
-                f"{pair_of_players[1]['surname']} {pair_of_players[1]['family_name']}"
-            )
+            output_2 = f"{pair_of_players[1]['surname']} {pair_of_players[1]['family_name']}"
             # 4 : afficher le match
             print(f"Match {output_1} VS {output_2}")
 
@@ -40,16 +39,29 @@ class Vues:
         ranking = 1
         # 2 : créer une boucle pour chaque joueur
         for player in list_of_players:
+            # 1 : afficher son rang, son nom et son score total
             print(
                 f"{ranking} - {player['family_name']} {player['surname']} - {player['score']}"
             )
-            # 1 : ajouter 1 à chaque nouveau passage de la boucle
+            # 2 : ajouter 1 à chaque nouveau passage de la boucle
             ranking = ranking + 1
 
-    # 5 : définir une fonction qui permet d'afficher un message et de récupérer la reponse de l'utilisateur
+    def display_match_tournament(self, list_of_matches):
+        # 1 : créer une boucle pour chaque match
+        i = 1
+        for match in list_of_matches:
+            # 1 : récupérer la paire de joueurs du match
+            output_1 = f"{pair_of_players[0]['surname']} {pair_of_players[0]['family_name']}"
+            output_2 = f"{pair_of_players[1]['surname']} {pair_of_players[1]['family_name']}"
+            output_3 = f"{score}"
+            # 1 : afficher ses informations
+            print(f"{i} : Match {output_1} VS {output_2}:{output_3}")
+            i = i + 1
+
+    # 6 : définir une fonction qui permet d'afficher un message et de récupérer la reponse de l'utilisateur
     def deal_with_input(self, message):
         return input(message)
 
-    # 5 : définir une fonction qui permet d'afficher un message
+    # 7 : définir une fonction qui permet d'afficher un message
     def deal_with_print(self, message):
         return print(message)

@@ -4,23 +4,22 @@ from models import Round
 
 class ControllerRounds:
 
-    # 1 : ouvrir la liste des matchs
+    # 1 : récupérer la liste des matchs
     global list_of_matches
     list_of_matches = LIST_OF_MATCHES
 
-    # 2 : définir le nombre de joueurs
+    # 2 : récupérer le nombre de joueurs
     global number_of_players
     number_of_players = NUMBER_OF_PLAYERS
 
-    # 3 : définir le nombre maximum de rounds
+    # 3 : récupérer le nombre maximum de rounds
     global number_max_of_rounds
     number_max_of_rounds = NUMBER_MAX_OF_ROUNDS
 
     def __init__(self):
         pass
 
-    # 7 : définir une fonction détaillant ce qui se passe quand on choisi 2 dans le menu
-    # Rounds
+    # 4 : définir une fonction détaillant ce qui se passe quand on choisi 2 dans le menu
     def step_two(
         self,
         x,
@@ -28,7 +27,6 @@ class ControllerRounds:
         nb_of_rounds,
         matches,
         list_of_players,
-        list_of_pairs_of_players,
     ):
         # 1 : si la liste des joueurs dans Tinydb est vide
         if x == 0:
@@ -42,7 +40,7 @@ class ControllerRounds:
             # 3 : appeler la fonction save_players pour sauvegarder les joueurs
             self.save_players(list_of_players)
             # 4 : retourner le menu
-            return self.menu(list_of_players, list_of_pairs_of_players)
+            return self.menu(list_of_players)
         # 2 : si la liste des joueurs dans Tinydb n'est pas vide
         else:
             # 3 : afficher le nombre de rounds possible
@@ -73,13 +71,10 @@ class ControllerRounds:
                 # 4 : créer le round à partir des matchs
                 first_round = self.create_rounds(first_matches)
                 # 5 : créer la liste des paires de joueurs
-                list_of_pairs_of_players = self.create_list_of_pairs_of_players(
-                    first_matches, list_of_pairs_of_players
-                )
                 # 6 : appeler la fonction set_score pour ajouter un score aux matchs
                 self.set_score(first_round)
                 # 7 : revenir au menu
-                return self.menu(list_of_players, list_of_pairs_of_players)
+                return self.menu(list_of_players)
             # 9 : si on a dépassé le premier round mais que les limites de rounds maximum définies par l'oganisateur
             # et par le nombre de joueurs ne sont pas atteintes
             elif actual_round <= number_max_of_rounds and actual_round <= nb_of_rounds:
@@ -105,14 +100,10 @@ class ControllerRounds:
                 )
                 # 7 : créer le round à partir des matchs
                 round = self.create_rounds(current_match)
-                # 8 : ajouter les paires de joueurs des matchs à la liste des paires de joueurs
-                list_of_pairs_of_players = self.create_list_of_pairs_of_players(
-                    match, list_of_pairs_of_players
-                )
                 # 8 : appeler la fonction set_score pour ajouter un score aux matchs
                 self.set_score(round)
                 # 9 : revenir au menu
-                return self.menu(list_of_players, list_of_pairs_of_players)
+                return self.menu(list_of_players)
             # 10 : si le nombre de rounds défini par l'organisteur est atteint
             elif actual_round > number_max_of_rounds:
                 # 1 : appeler la fonction view_deal_with_print dans Vues pour notifier à l'organisateur qu'il a
@@ -121,7 +112,7 @@ class ControllerRounds:
                     "Le nombre maximum de rounds choisis par l'oganisateur est atteint"
                 )
                 # 2 : revenir au menu
-                return self.menu(list_of_players, list_of_pairs_of_players)
+                return self.menu(list_of_players)
             # 11 : si le nombre de rounds maximum possible est atteint
             elif actual_round > nb_of_rounds:
                 # 1 : appeler la fonction view_deal_with_print dans Vues pour notifier à l'organisateur qu'il a
@@ -130,18 +121,16 @@ class ControllerRounds:
                     "Le nombre maximum de rounds possibles est atteint"
                 )
                 # 2 : revenir au menu
-                return self.menu(list_of_players, list_of_pairs_of_players)
+                return self.menu(list_of_players)
 
-    # 12 : définir une fonction qui permet de créer les rounds
-    # Rounds
+    # 5 : définir une fonction qui permet de créer les rounds
     def create_rounds(self, list_of_matches):
         # 1 : associer une liste de matchs à chaque round
         round = Round(name="Round", matches=list_of_matches)
         # 2 : récupérer le round
         return round
 
-    # 14 : définir une fonction qui permet de rentrer les scores des joueurs pour chaque round
-    # Rounds ou Players?
+    # 6 : définir une fonction qui permet de rentrer les scores des joueurs pour chaque round
     def set_score(self, round):
         # 1 : créer une boucle pour tous les matchs du round
         for elem in round.matches:
@@ -186,33 +175,33 @@ class ControllerRounds:
                 # 6 : arrêter la boucle si les deux scores additionés font 1
                 else:
                     repeat = False
-            # 2 : appeler la fonction set_score dans Models pour récupérer les deux scores
+            # 1 : appeler la fonction set_score dans Models pour récupérer les deux scores
             elem.set_score([score_1, score_2])
-            # 3 : appeler la fonction get_players de Models pour récupérer les joueurs dans TinyDB
+            # 2 : appeler la fonction get_players de Models pour récupérer les joueurs dans TinyDB
             players = self.models_player_db.get_players()
-            # 4 : appeler la fonction get_matches de Models pour récupérer les joueurs dans TinyDB
+            # 3 : appeler la fonction get_matches de Models pour récupérer les joueurs dans TinyDB
             matches = self.models_match_db.get_matches()
-            # 5 : appeler la fonction query_player de Models pour aller chercher les informations
+            # 4 : appeler la fonction query_player de Models pour aller chercher les informations
             #  des joueurs dans TinyDB
             player = self.models_player_db.query_player()
-            # 6 : appeler la fonction query_match de Models pour aller chercher les informations
-            #  des matchs dans TinyDB
+            # 5 : appeler la fonction query_match de Models pour aller chercher les informations
+            # des matchs dans TinyDB
             match = self.models_match_db.query_match()
-            # 7 : appeler la fonction initiate_score de Models pour initialiser le score du match dans TinyDB
+            # 6 : appeler la fonction initiate_score de Models pour initialiser le score du match dans TinyDB
             self.models_match_db.initiate_score__matches(matches, match, elem)
-            # 8 : appeler la fonction search_player de Models pour aller chercher le joueur 1 dans TinyDB
+            # 7 : appeler la fonction search_player de Models pour aller chercher le joueur 1 dans TinyDB
             current_player = self.models_player_db.search_player(player, players, j1)
-            # 9 : ajouter le score que le joueur 1 a obtenu lors de son match à son ancien score
+            # 8 : ajouter le score que le joueur 1 a obtenu lors de son match à son ancien score
             current_score_P1 = float(current_player[0]["score"]) + score_1
-            # 10 : appeler la fonction update_score_player dans Models pour modifier le score du joueur 1
+            # 9 : appeler la fonction update_score_player dans Models pour modifier le score du joueur 1
             self.models_player_db.update_score_player(
                 player, players, current_score_P1, j1
             )
-            # 11 : appeler la fonction search_player de Models pour aller chercher le joueur 2 dans TinyDB
+            # 10 : appeler la fonction search_player de Models pour aller chercher le joueur 2 dans TinyDB
             current_player = self.models_player_db.search_player(player, players, j2)
-            # 12 : ajouter le score que le joueur 2 a obtenu lors de son match à son ancien score
+            # 11 : ajouter le score que le joueur 2 a obtenu lors de son match à son ancien score
             current_score_P2 = float(current_player[0]["score"]) + score_2
-            # 13 : appeler la fonction update_score_player dans Models pour modifier le score du joueur 2
+            # 12 : appeler la fonction update_score_player dans Models pour modifier le score du joueur 2
             self.models_player_db.update_score_player(
                 player, players, current_score_P2, j2
             )

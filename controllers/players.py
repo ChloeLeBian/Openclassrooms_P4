@@ -5,24 +5,23 @@ from models import Player
 
 class ControllerPlayers:
 
-    # 1 : ouvrir la liste des matchs
+    # 1 : récupérer la liste des matchs
     global list_of_matches
     list_of_matches = LIST_OF_MATCHES
 
-    # 2 : définir le nombre de joueurs
+    # 2 : récupérer le nombre de joueurs
     global number_of_players
     number_of_players = NUMBER_OF_PLAYERS
 
-    # 3 : définir le nombre maximum de rounds
+    # 3 : récupérer le nombre maximum de rounds
     global number_max_of_rounds
     number_max_of_rounds = NUMBER_MAX_OF_ROUNDS
 
     def __init__(self):
         pass
 
-    # 6 : définir une fonction détaillant ce qui se passe quand on choisi 1 dans le menu
-    # Players
-    def step_one(self, x, list_of_players, list_of_pairs_of_players):
+    # 4 : définir une fonction détaillant ce qui se passe quand on choisi 1 dans le menu
+    def step_one(self, x, list_of_players):
         # 1 : si la liste des joueurs dans Tinydb est vide
         if x == 0:
             # 1 : appeler la fonction create_players pour créer les joueurs
@@ -30,7 +29,7 @@ class ControllerPlayers:
             # 2 : appeler la fonction save_players pour sauvegarder les joueurs
             self.save_players(list_of_players)
             # 3 : retourner le menu
-            return self.menu(list_of_players, list_of_pairs_of_players)
+            return self.menu(list_of_players)
 
         # 2 : si la liste des joueurs dans Tinydb n'est pas vide
         else:
@@ -40,34 +39,38 @@ class ControllerPlayers:
                 "Vous avez déjà enregistrés vos joueurs, veuillez générer vos rounds\n\r"
             )
             # 2 : retourner le menu
-            return self.menu(list_of_players, list_of_pairs_of_players)
+            return self.menu(list_of_players)
 
-    
-    def step_three(self, list_of_players, list_of_pairs_of_players):
+    # 5 : définir une fonction détaillant ce qui se passe quand on choisi 3 dans le menu
+    def step_three(self, list_of_players):
+        # 1 : appeler la fonction view_deal_with_input dans Vues pour affichez ses choix à l'organisateur et récupérer
+        # sa réponse
         answer = self.view.deal_with_input(
                 "Classez vos joueurs par score: 1,\n\rClassez vos joueurs par ordre alphabétique: 2\n\r"
             )
+        # 2 : si sa réponse est 1
         if answer == "1":
+            # 1 : appeler la fonction rank_players_by_score qui classe les joueurs selon leur score
             self.rank_players_by_score()
             # 2 : retourner le menu
-            return self.menu(list_of_players, list_of_pairs_of_players)
-
+            return self.menu(list_of_players)
+        # 3 : si sa réponse est 2
         elif answer == "2":
+            # 1 : appeler la fonction rank_players_by_name qui classe les joueurs selon leur nom de famille
             self.rank_players_by_name()
             # 2 : retourner le menu
-            return self.menu(list_of_players, list_of_pairs_of_players)
-        
+            return self.menu(list_of_players)
+        # 4 : sinon
         else:
             # 1 : appeler la fonction view_deal_with_print dans Vues qui affiche
             # du texte pour notifier à l'organisateur que son choix est incorrect
             self.view.deal_with_print("Veuillez entrer 1 ou 2")
             # 2 : retourner le menu
-            return self.step_three(list_of_players, list_of_pairs_of_players)
+            return self.step_three(list_of_players)
 
-    # 8 : définir une fonction qui permet de classer les joueurs selon leur score par ordre décroissant
-    # Players
+    # 6 : définir une fonction qui permet de classer les joueurs selon leur score par ordre décroissant
     def rank_players_by_score(self):
-        # 1 : appeler la fonction get_players dans Mo3dels qui permet de récupérer les joueurs dans TinyDB
+        # 1 : appeler la fonction get_players dans Models qui permet de récupérer les joueurs dans TinyDB
         # et les mettre dans une liste de joueurs
         list_of_players = self.models_player_db.get_players()
         # 2 : classer les joueurs de la liste selon leur score
@@ -78,11 +81,12 @@ class ControllerPlayers:
         # les joueurs, leur score et leur rang
         self.view.display_ranking(list_of_players)
 
+    # 7 : définir une fonction qui permet de classer les joueurs selon leur nom par ordre croissant
     def rank_players_by_name(self):
-        # 1 : appeler la fonction get_players dans Mo3dels qui permet de récupérer les joueurs dans TinyDB
+        # 1 : appeler la fonction get_players dans Models qui permet de récupérer les joueurs dans TinyDB
         # et les mettre dans une liste de joueurs
         list_of_players = self.models_player_db.get_players()
-        # 2 : classer les joueurs de la liste selon leur score
+        # 2 : classer les joueurs de la liste selon leur nom de famille par ordre croissant
         list_of_players = sorted(
             list_of_players, key=lambda d: d["family_name"], reverse=False
         )
@@ -92,7 +96,6 @@ class ControllerPlayers:
 
     # 8 : définir une fonction qui permet de créer des joueurs en fonction du
     # nombre de joueurs défini
-    # Players
     def create_players(self, number_of_players):
         # 1 : initaliser une liste de joueurs
         players = []
@@ -127,7 +130,6 @@ class ControllerPlayers:
         return sorted(players, key=lambda player: player.ranking)
 
     # 9 : définir une fonction qui permet de récupérer les informations d'un joueur n°i
-    # Players
     def get_info_of_player(self, rankings_players, i):
         # 1 : appeler la fonction view_deal_with_input dans Vues qui affiche du texte et récupère la réponse
         # de l'utilisateur pour demander à l'organisateur le prénom du joueur
@@ -198,7 +200,6 @@ class ControllerPlayers:
         return surname, family_name, date_of_birth, sex, ranking, score
 
     # 10 : définir une fonction qui permet de sauvegarder les informations des joueurs
-    # Players
     def save_players(self, list_of_players):
         # 1 : appeler la fonction display_players dans Vues qui permet d'afficher les joueurs
         self.view.display_players(list_of_players)

@@ -5,7 +5,7 @@ from tinydb import TinyDB, Query
 db = TinyDB("database/database.json")
 
 
-# 4 : définir une classe Player
+# 2 : définir une classe Player
 class Player:
     def __init__(
         self, family_name, surname, date_of_birth, sex, ranking, score,  total_score=0
@@ -55,7 +55,7 @@ class Player:
         self.total_score = new_score
 
 
-# 5 : définir une classe PlayerDB
+# 3 : définir une classe PlayerDB
 class PlayerDB:
     def __init__(self, current_tournament):
         self.current_tournament = current_tournament

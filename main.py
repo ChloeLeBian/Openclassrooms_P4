@@ -5,9 +5,8 @@ from controllers import Controller
 controller = Controller()
 #vues = Vues()
 
-# 2 : initaliser la liste des paires de joueurs et celle des joueurs
-list_of_pairs_of_players = []
+# 2 : initaliser la liste des joueurs
 list_of_players = []
 
 # 3 : appeler le menu
-controller.menu(list_of_players, list_of_pairs_of_players)
+controller.menu(list_of_players)

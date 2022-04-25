@@ -4,7 +4,8 @@ from tinydb import TinyDB
 # 1 : initialiser TinyDB
 db = TinyDB("database.json")
 
-# 6 : définir une classe Round
+
+# 2 : définir une classe Round
 class Round:
     def __init__(self, name, matches, tournoi=1):
         self.name = name

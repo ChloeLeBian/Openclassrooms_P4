@@ -1,4 +1,3 @@
-import pandas as pd
 from models import MatchDB, PlayerDB, TournamentDB
 from vues import Vues
 from .globals import LIST_OF_MATCHES, NUMBER_OF_PLAYERS, NUMBER_MAX_OF_ROUNDS
@@ -10,22 +9,19 @@ from .tournaments import ControllerTournaments
 
 class Controller(ControllerPlayers, ControllerMatches, ControllerRounds, ControllerTournaments):
 
-    # 1 : ouvrir la liste des matchs
+    # 1 : récupérer la liste des matchs
     global list_of_matches
     list_of_matches = LIST_OF_MATCHES
 
-    # 2 : définir le nombre de joueurs
+    # 2 : récupérer le nombre de joueurs
     global number_of_players
     number_of_players = NUMBER_OF_PLAYERS
 
-    # 3 : définir le nombre maximum de rounds
+    # 3 : récupérer le nombre maximum de rounds
     global number_max_of_rounds
     number_max_of_rounds = NUMBER_MAX_OF_ROUNDS
 
-    #global beginning_file_path
-    #beginning_file_path = BEGINNING_FILE_PATH
-
-    # 4 : initialiser Vues, PlayerDB et MatchDB
+    # 4 : initialiser Vues, PlayerDB, MatchDB, TournamentDB et initialiser le tournoi
     def __init__(self):
         self.models_tournament_db = TournamentDB()
         self.view = Vues()
@@ -35,19 +31,18 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds, Control
         
 
     # 5 : définir une fonction menu
-    # Controller
-    def menu(self, list_of_players, list_of_pairs_of_players):
+    def menu(self, list_of_players):
         # 1 : appeler la fonction view_deal_with_input dans Vues qui affiche du texte pour et récupère la réponse
         # de l'utilisateur pour afficher ses choix à l'organisateur
         answer = self.view.deal_with_input(
-            "Ajouter des joueurs: 1,\n\rGénérer un round: 2,\n\rConsulter le classement des joueurs: 3,\n\rTéléchargez un rapport: 4\n "
+            "Ajouter des joueurs: 1,\n\rGénérer un round: 2,\n\rConsulter le classement des joueurs: 3,\n\rVisualisez le rapport: 4\n "
         )
         # 2 : si son choix est 1
         if answer == "1":
             # 1 : appeler la fonction get_players dans models qui va chercher les joueurs dans Tinydb
             players = self.models_player_db.get_players()
             # 2 : appeler la fonction step_one qui défini ce qui se passe quand l'organisateur choisi 1
-            self.step_one(len(players), list_of_players, list_of_pairs_of_players)
+            self.step_one(len(players), list_of_players)
         # 3 : si son choix est 2
         elif answer == "2":
             # 1 : appeler la fonction get_players dans models qui va chercher les joueurs dans Tinydb
@@ -67,43 +62,28 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds, Control
                 nb_of_rounds,
                 matches,
                 list_of_players,
-                list_of_pairs_of_players,
             )
         # 4 : si son choix est 3
         elif answer == "3":
-            # 1 : appeler la fonction rank_players qui classe les joueurs selon leur score
-            self.step_three(list_of_players, list_of_pairs_of_players)
-        #elif answer == "4":
-            #df = pd.read_json (r'{}\database\{}.json'.format(beginning_file_path)(self.current_tournament))
-            #df.to_csv (r'{}\csv\{}.csv'.format(beginning_file_path)(self.current_tournament), index = None)
+            # 1 : appeler la fonction step qui défini ce qui se passe quand l'organisateur choisi 3
+            self.step_three(list_of_players)
+        # 5 : si son choix est 4
+        elif answer == "4":
+            # 1 : appeler la fonction rank_players_by_score qui classe les joueurs selon leur score ou leur nom
+            self.rank_players_by_score()
+            # 2 : appeler la fonction get_matches dans models qui va chercher les matchs dans Tinydb
+            list_of_matches = self.models_match_db.get_matches()
+            # 3 : appeler la fonction step_four qui défini le reste de ce qui se passe quand l'organisateur choisi 4
+            self.step_four(list_of_matches)
+        # 6 : sinon
         else:
             # 1 : appeler la fonction view_deal_with_print dans Vues qui affiche
             # du texte pour notifier à l'organisateur que son choix est incorrect
             self.view.deal_with_print("Veuillez entrer 1, 2, ou 3")
             # 2 : retourner le menu
-            return self.menu(list_of_players, list_of_pairs_of_players)
+            return self.menu(list_of_players)
 
-    # 13 : définir une fonction qui permet de créer une liste de paires de joueurs
-    # Controller?
-    def create_list_of_pairs_of_players(
-        self, list_of_matches, list_of_pairs_of_players
-    ):
-        # 1 : faire une boucle pour tous les matchs dans la liste de matchs
-        for elem in list_of_matches:
-            # 1 : récupérer la paire de joueur du match
-            pair_of_players = elem.get_pair_of_players()
-            # 2 : ajouter le nom de famille des joueurs à la liste de paires de joueurs
-            list_of_pairs_of_players.append(
-                (
-                    pair_of_players[0]["family_name"],
-                    pair_of_players[1]["family_name"],
-                )
-            )
-        # 2 : récupérer la liste de paires de joueurs complétée
-        return list_of_pairs_of_players
-
-    # 15 : définir une fonction qui permet de vérifier si un élément est un float
-    # Controller?
+    # 6 : définir une fonction qui permet de vérifier si un élément est un float
     def isfloat(self, num):
         try:
             float(num)
@@ -111,8 +91,7 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds, Control
         except ValueError:
             return False
 
-    # 16 : définir une fonction qui permet de vérifier si un élément est un entier
-    # Controller?
+    # 7 : définir une fonction qui permet de vérifier si un élément est un entier
     def isint(self, num):
         try:
             int(num)
@@ -120,9 +99,8 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds, Control
         except ValueError:
             return False
 
-    # 17 : définir une fonction qui permet de vérifier si un élément valide en étant un entier situé entre
+    # 8 : définir une fonction qui permet de vérifier si un élément valide en étant un entier situé entre
     # 1 et la longueur d'une liste
-    # Controller?
     def numberisvalid(self, num, number_of_elements):
         if not self.isint(num):
             return False
