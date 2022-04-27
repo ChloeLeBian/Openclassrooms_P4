@@ -46,17 +46,23 @@ class Vues:
             # 2 : ajouter 1 à chaque nouveau passage de la boucle
             ranking = ranking + 1
 
+    # 5 : définir une fonction qui permet d'afficher tous les matchs d'un tournoi
     def display_match_tournament(self, list_of_matches):
-        # 1 : créer une boucle pour chaque match
+        # 1 : définir une variable i qui va indiquer l'index de chaque match
         i = 1
+        # 2 : créer une boucle pour chaque match de la liste
         for match in list_of_matches:
-            # 1 : récupérer la paire de joueurs du match
+            # 1 : récupérer la paire de joueurs de chaque match
+            pair_of_players = match['pair_of_players']
+            # 2 : récupérer le score de chaque match
+            score = match['score']
+            # 3 : récupérer le nom de chaque joueur et le score
             output_1 = f"{pair_of_players[0]['surname']} {pair_of_players[0]['family_name']}"
             output_2 = f"{pair_of_players[1]['surname']} {pair_of_players[1]['family_name']}"
             output_3 = f"{score}"
-            # 1 : afficher ses informations
-            print(f"{i} : Match {output_1} VS {output_2}:{output_3}")
-            i = i + 1
+            # 4 : afficher ces informations à l'utilisateur
+            print(f"Match {i} : {output_1} VS {output_2}:{output_3}")
+            i = i+1
 
     # 6 : définir une fonction qui permet d'afficher un message et de récupérer la reponse de l'utilisateur
     def deal_with_input(self, message):

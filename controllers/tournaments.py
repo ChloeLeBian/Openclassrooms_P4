@@ -105,11 +105,12 @@ class ControllerTournaments:
         # 6 : récupérer le nom du tournoi
         return name
 
-    
+    # 1 : créer une fonction pour définir ce qui se passe quand l'utilisateur choisi 4
     def step_four(self, list_of_matches):
-    # 3 : appeler la fonction display ranking dans Vues qui permet d'afficher
-    # les joueurs, leur score et leur rang
-        pair_of_players = elem.get_pair_of_players()
+        # 1 : appeler la fonction view_deal_with_print dans Vues qui affiche du texte à l'utilisateur
+        # pour lui indiquer ce que l'on va afficher avec la fonction suivante
+        self.view.deal_with_print("\nListe des matchs\n")
+        # 2 : appeler la fonction display_match_tournament dans Vues qui va fficher tous les matchs du tournoi
         self.view.display_match_tournament(list_of_matches)
 
 

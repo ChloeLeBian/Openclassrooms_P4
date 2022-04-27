@@ -69,11 +69,14 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds, Control
             self.step_three(list_of_players)
         # 5 : si son choix est 4
         elif answer == "4":
-            # 1 : appeler la fonction rank_players_by_score qui classe les joueurs selon leur score ou leur nom
+            #1 : appeler la fonction view_deal_with_print dans Vues qui affiche du texte notifier
+            # à l'utilisateur ce que la fonction suivante va afficher
+            self.view.deal_with_print("\nListe des joueurs classés par score\n")
+            # 2 : appeler la fonction rank_players_by_score qui classe les joueurs selon leur score
             self.rank_players_by_score()
-            # 2 : appeler la fonction get_matches dans models qui va chercher les matchs dans Tinydb
-            list_of_matches = self.models_match_db.get_matches()
-            # 3 : appeler la fonction step_four qui défini le reste de ce qui se passe quand l'organisateur choisi 4
+            # 3 : appeler la fonction get_all_matches dans models qui va chercher les matchs dans Tinydb
+            list_of_matches = self.models_match_db.get_all_matches()
+            # 4 : appeler la fonction step_four qui défini le reste de ce qui se passe quand l'organisateur choisi 4
             self.step_four(list_of_matches)
         # 6 : sinon
         else:

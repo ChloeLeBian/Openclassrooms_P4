@@ -32,6 +32,10 @@ class MatchDB:
     def get_matches(self):
         matches = self.db.table("matches")
         return matches
+    
+    def get_all_matches(self):
+        matches = self.db.table("matches").all()
+        return matches
 
     def query_match(self):
         match = Query()
