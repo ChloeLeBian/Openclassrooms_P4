@@ -19,7 +19,7 @@ class ControllerMatches:
 
     def __init__(self):
         pass
-    
+
     # 4 : créer une fonction pour créer les matchs
     def create_matches(self, list_of_players, list_of_matches, round):
         # 1 : initialiser une liste de matchs possibles vide
@@ -38,8 +38,10 @@ class ControllerMatches:
                 and x[0]["surname"] == y[1]["surname"]
             )
         )
-        # 5 : créer une fonction qui vérifie si pour deux matchs donnés un joueur ne joue pas deux fois en utilisant son prénom
-        def possible_to_play(m,cm):
+
+        # 5 : créer une fonction qui vérifie si pour deux matchs donnés un joueur ne joue
+        # pas deux fois en utilisant son prénom
+        def possible_to_play(m, cm):
             for item in cm:
                 if m[0]['surname'] == item[0]['surname'] or m[1]['surname'] == item[0]['surname']:
                     return False
@@ -87,11 +89,11 @@ class ControllerMatches:
                     possible_matches.append(m)
             # 5 : créer une liste de matchs à garder
             current_matches = []
-            # 6 : vérifier pour chaque si un joueur ne joue pas deux fois en le comparant aux éléments des matchs du round
-            # dans current_matches grâce à la fonction possible_to_play
+            # 6 : vérifier pour chaque si un joueur ne joue pas deux fois en le comparant aux éléments
+            # des matchs du round dans current_matches grâce à la fonction possible_to_play
             for m in possible_matches:
-                if possible_to_play(m,current_matches):
-                    current_matches.append(m)       
+                if possible_to_play(m, current_matches):
+                    current_matches.append(m)
             # 7 : obtenir la liste des matchs sans les nouveaux matchs potentiels
             list_of_matches = [
                 Match(x["pair_of_players"], x["score"]) for x in matches.all()
@@ -104,6 +106,3 @@ class ControllerMatches:
             list_of_matches += current_matches
             # 10 : récupérer la liste des matchs complétée et les nouveaux matchs
             return list_of_matches, current_matches
-    
-            
-            

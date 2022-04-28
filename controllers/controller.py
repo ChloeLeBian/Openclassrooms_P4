@@ -28,14 +28,14 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds, Control
         self.current_tournament = self.start()
         self.models_player_db = PlayerDB(self.current_tournament)
         self.models_match_db = MatchDB(self.current_tournament)
-        
 
     # 5 : définir une fonction menu
     def menu(self, list_of_players):
+
         # 1 : appeler la fonction view_deal_with_input dans Vues qui affiche du texte pour et récupère la réponse
         # de l'utilisateur pour afficher ses choix à l'organisateur
         answer = self.view.deal_with_input(
-            "Ajouter des joueurs: 1,\n\rGénérer un round: 2,\n\rConsulter le classement des joueurs: 3,\n\rVisualisez le rapport: 4\n "
+            "Ajouter joueurs: 1,\n\rGénérer round: 2,\n\rConsulter classement: 3,\n\rVisualisez rapport: 4\n "
         )
         # 2 : si son choix est 1
         if answer == "1":
@@ -69,7 +69,7 @@ class Controller(ControllerPlayers, ControllerMatches, ControllerRounds, Control
             self.step_three(list_of_players)
         # 5 : si son choix est 4
         elif answer == "4":
-            #1 : appeler la fonction view_deal_with_print dans Vues qui affiche du texte notifier
+            # 1 : appeler la fonction view_deal_with_print dans Vues qui affiche du texte notifier
             # à l'utilisateur ce que la fonction suivante va afficher
             self.view.deal_with_print("\nListe des joueurs classés par score\n")
             # 2 : appeler la fonction rank_players_by_score qui classe les joueurs selon leur score

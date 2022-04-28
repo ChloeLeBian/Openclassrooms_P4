@@ -3,7 +3,7 @@
 # E266 too many leading '#' for block comment
 # D203 : One blank line required before class docstring
 # H306  : imports not in alphabetical order
-ignore = H903, E266, D203, H306, C901, E731, W503
+ignore = H903, E266, D203, H306, C901, E731, W503, F401, F402, F811, F841
 exclude = env,
 max-complexity = 10
 max_line_length = 120

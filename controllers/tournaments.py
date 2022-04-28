@@ -19,14 +19,9 @@ class ControllerTournaments:
 
     def __init__(self):
         pass
-    
+
     # 4 : créer une fonction qui initialise le tournoi
     def start(self):
-        """ 
-        1 : checker si un tournoi existe
-        2 : si un tournoi existe proposer de reprendre le tournoi ou de créer un nouveau tournoi
-        3 : si il n'y a pas de tournoi existant créer un nouveau tournoi
-        """
         # 1 : initialiser le nom du tournoi
         tournament_name = "database"
         # 2 : récupérer la liste des tournois grâce à la fonction get_tournaments dans models
@@ -40,12 +35,16 @@ class ControllerTournaments:
             tournament_data = []
             # 2 : créer une boucle for pour afficher les tournois existant
             for tournament in tournaments:
-                i = i+1
+                i = i + 1
                 tournament_data.append(tournament)
                 self.view.deal_with_print(f"{i}. {tournament['name']}")
-            # 3 : appeler la fonction view.deal_with_input dans vues pour notifier à l'organisateuret s'il veut revenir sur un des tournois
-            # affichés ou en créer un nouveau et récupérer sa réponse
-            answer = int(self.view.deal_with_input(f"choisir un tournoi dans la liste ci-dessus (de 1 à {i}) ou entez 0 pour créer un nouveau tournoi\n"))
+            # 3 : appeler la fonction view.deal_with_input dans vues pour notifier à l'organisateur et
+            # s'il veut revenir sur un des tournois affichés ou en créer un nouveau et récupérer sa réponse
+            answer = int(
+                self.view.deal_with_input(
+                    f"choisir un tournoi dans la liste (de 1 à {i}) ou faire 0 pour créer un nouveau tournoi\n"
+                )
+            )
             # 4 : si sa réponse est 0
             if answer == 0:
                 # 1 : créer un nouveau tournoi en appelant la fonction create_tournament
@@ -53,12 +52,14 @@ class ControllerTournaments:
             # 5 : sinon
             else:
                 # 2 : aller chercher le nom du tournoi dans la liste des tournois selon sa réponse
-                tournament_name = tournament_data[answer - 1]['name']
-        
+                tournament_name = tournament_data[answer - 1]["name"]
+
         # 4 : si la liste des tournois est vide
         else:
             # 1 : notifier à l'organisateur qu'il n'existe aucun tournoi
-            self.view.deal_with_print("aucun tournoi n'existe il faut créer un nouveau tournoi\n")
+            self.view.deal_with_print(
+                "aucun tournoi n'existe il faut créer un nouveau tournoi\n"
+            )
             # 2 : appeler la fonction create_tournament pour créer un tournoi
             tournament_name = self.create_tournament()
         # 5 : afficher le nom du tournoi choisi ou créé
@@ -68,11 +69,9 @@ class ControllerTournaments:
 
     # 5 : créer une fonction pour créer un tournoi
     def create_tournament(self):
-        # 1 : demander à l'organisateur le nom du tournoi et le récupérer 
-        name = self.view.deal_with_input(
-                    "Entrez le nom du tournoi\n"
-                )
-        # 2 : demander à l'organisateur la date du tournoi et la récupérer 
+        # 1 : demander à l'organisateur le nom du tournoi et le récupérer
+        name = self.view.deal_with_input("Entrez le nom du tournoi\n")
+        # 2 : demander à l'organisateur la date du tournoi et la récupérer
         while True:
             try:
                 date = self.view.deal_with_input(
@@ -89,15 +88,9 @@ class ControllerTournaments:
             except ValueError as e:
                 self.view.deal_with_print(e)
                 self.view.deal_with_print("Format invalide")
-        # 3 : demander à l'organisateur le lieu du tournoi et le récupérer 
-        place = self.view.deal_with_input(
-                    "Entrez le lieu du tournoi\n"
-                )
-        tournament = Tournament(
-                name=name,
-                date=date,
-                place=place
-            )
+        # 3 : demander à l'organisateur le lieu du tournoi et le récupérer
+        place = self.view.deal_with_input("Entrez le lieu du tournoi\n")
+        tournament = Tournament(name=name, date=date, place=place)
         # 4 : sauvegarer le tournoi
         tournament.save_tournament()
         # 5 : créer un nouveau json portant le nom du tournoi
@@ -112,6 +105,3 @@ class ControllerTournaments:
         self.view.deal_with_print("\nListe des matchs\n")
         # 2 : appeler la fonction display_match_tournament dans Vues qui va fficher tous les matchs du tournoi
         self.view.display_match_tournament(list_of_matches)
-
-
-    

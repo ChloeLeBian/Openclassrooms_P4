@@ -45,9 +45,7 @@ class ControllerPlayers:
     def step_three(self, list_of_players):
         # 1 : appeler la fonction view_deal_with_input dans Vues pour affichez ses choix à l'organisateur et récupérer
         # sa réponse
-        answer = self.view.deal_with_input(
-                "Classez vos joueurs par score: 1,\n\rClassez vos joueurs par ordre alphabétique: 2\n\r"
-            )
+        answer = self.view.deal_with_input("Classer par score: 1,\n\rClasser par ordre alphabétique: 2\n\r")
         # 2 : si sa réponse est 1
         if answer == "1":
             # 1 : appeler la fonction rank_players_by_score qui classe les joueurs selon leur score

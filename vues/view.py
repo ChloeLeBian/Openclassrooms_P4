@@ -4,7 +4,7 @@ from models import matches
 class Vues:
     # 1 : initialiser PlayerDB
     def __init__(self):
-       pass
+        pass
 
     # 2 : définir une fonction qui permet d'afficher les matchs
     def display_matches(self, match, match_to_display):
@@ -62,7 +62,7 @@ class Vues:
             output_3 = f"{score}"
             # 4 : afficher ces informations à l'utilisateur
             print(f"Match {i} : {output_1} VS {output_2}:{output_3}")
-            i = i+1
+            i = i + 1
 
     # 6 : définir une fonction qui permet d'afficher un message et de récupérer la reponse de l'utilisateur
     def deal_with_input(self, message):

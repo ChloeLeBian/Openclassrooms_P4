@@ -8,7 +8,7 @@ db = TinyDB("database/database.json")
 # 2 : définir une classe Player
 class Player:
     def __init__(
-        self, family_name, surname, date_of_birth, sex, ranking, score,  total_score=0
+        self, family_name, surname, date_of_birth, sex, ranking, score, total_score=0
     ):
         self.family_name = family_name
         self.surname = surname

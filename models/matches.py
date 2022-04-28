@@ -4,6 +4,7 @@ from tinydb import TinyDB, Query
 # 1 : initialiser TinyDB
 db = TinyDB("database/database.json")
 
+
 # 2 : définir une classe Match
 class Match:
     def __init__(self, pair_of_players, score=[0, 0], tournoi=1):
@@ -32,7 +33,7 @@ class MatchDB:
     def get_matches(self):
         matches = self.db.table("matches")
         return matches
-    
+
     def get_all_matches(self):
         matches = self.db.table("matches").all()
         return matches
